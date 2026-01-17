@@ -67,6 +67,32 @@ Prompt per creare piani dettagliati prima di implementare modifiche:
 - `come dovremmo gestire la migrazione del database?`
 - `analizza il sistema di autenticazione e suggerisci miglioramenti`
 
+### Template: Implementa Piano
+
+```
+Vorrei implementare il piano presente in .claude/plans/[NOME-PIANO].md
+
+Prima di procedere, leggi e applica le linee guida presenti in:
+- guidelines/AGENT_CORE.md
+- guidelines/AGENT_PLANNING.md
+- guidelines/AGENT_DEVELOPMENT.md
+
+Procedi con l'implementazione seguendo le raccomandazioni.
+```
+
+### Template: Crea Nuovo Piano
+
+```
+Vorrei creare un piano per: [DESCRIZIONE TASK]
+
+Prima di procedere, leggi e applica le linee guida presenti in:
+- guidelines/AGENT_CORE.md
+- guidelines/AGENT_PLANNING.md
+- guidelines/AGENT_DEVELOPMENT.md
+
+Analizza il codebase e crea un piano dettagliato seguendo le best practices.
+```
+
 ---
 
 ## 7. RACCOLTA REQUISITI (Modalità Intervista)
@@ -98,6 +124,12 @@ Prompt per creare e revisionare pull request:
 - `crea una pr`
 - `migliora la descrizione della PR con più contesto sui miglioramenti di sicurezza`
 - `aggiungi informazioni su come questi cambiamenti sono stati testati`
+
+### Template: Review PR Generico
+
+```
+Come senior developer, verifica che il codice sia tecnicamente corretto, rispetti i pattern esistenti, e non introduca bug o inconsistenze. Segnala problemi di sicurezza, performance, o maintainability.
+```
 
 ---
 
@@ -149,6 +181,12 @@ Prompt per ragionamento profondo e risoluzione di problemi complessi:
 Prompt per revisione del codice e controlli di qualità:
 
 - `sei un linter. per favore guarda i cambiamenti vs. main e segnala eventuali problemi legati a typo. segnala il nome del file e il numero di riga su una riga, e una descrizione del problema sulla seconda riga. non restituire nessun altro testo.`
+
+### Template: Review Codice vs Checklist
+
+```
+Come senior developer e tech lead, verifica che le modifiche coprano quanto richiesto nel checklist [nome-file]. Segnala errori, inconsistenze, file mancanti. Se trovi implementazioni non documentate, chiedi prima di procedere.
+```
 
 ---
 

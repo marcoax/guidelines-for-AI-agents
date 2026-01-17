@@ -77,21 +77,27 @@ L'agente sceglie autonomamente il tipo appropriato in base al contesto.
 
 ### Posizione obbligatoria
 
-**TUTTI i piani .md DEVONO essere salvati in:**
-```
-.claude/plans/[nome-piano].md
-```
+**Piano:**
+- Salvato automaticamente in `~/.claude/plans/[nome-piano].md` (home directory, gestito da Claude Code)
+- Globale per sessione, non per-progetto
+- Accessibile via `ExitPlanMode` al termine della pianificazione
+
+**Progress Tracking:**
+- Salvato in `progress/[nome-progetto]_progress.md` (nel repo)
+- Obbligatorio per piani .md o implementazioni con 3+ task
+- Traccia lo stato di avanzamento locale
 
 **Workflow creazione piano:**
 1. Agente chiede all'utente: "Nome per il piano? (es: auth-system, api-refactor)"
-2. Agente crea `.claude/plans/[nome-utente].md`
+2. Agente crea piano (Claude Code lo salva in `~/.claude/plans/[nome].md`)
 3. Agente presenta il piano e chiede conferma contenuto
+4. Dopo implementazione: creare `progress/[nome]_progress.md` nel repo
 
 ### Flusso piano dettagliato
 
-1. L'agente chiede nome piano, crea `.claude/plans/[nome].md` e chiede conferma contenuto
+1. L'agente chiede nome piano, Claude Code lo salva in `~/.claude/plans/[nome].md` e chiede conferma contenuto
 2. Dopo conferma piano → chiede scelta modalità (Junior/Senior/RALPH)
-3. **Modalità Junior/Senior**: implementazione manuale con tracking in `[nome-piano]_progress.md`
+3. **Modalità Junior/Senior**: implementazione manuale con tracking in `progress/[nome]_progress.md` (repo)
 4. **Modalità RALPH**: conversione automatica in `scripts/ralph/prd.json` + esecuzione autonoma
 
 ---
