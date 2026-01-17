@@ -1,0 +1,5 @@
+# Local settings (non sincronizzare su git)
+.claude.localsettings
+
+# OS
+.DS_Store

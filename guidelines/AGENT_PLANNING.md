@@ -75,9 +75,21 @@ Su richiesta esplicita, l'agente genera piano dettagliato in .md:
 
 L'agente sceglie autonomamente il tipo appropriato in base al contesto.
 
+### Posizione obbligatoria
+
+**TUTTI i piani .md DEVONO essere salvati in:**
+```
+.claude/plans/[nome-piano].md
+```
+
+**Workflow creazione piano:**
+1. Agente chiede all'utente: "Nome per il piano? (es: auth-system, api-refactor)"
+2. Agente crea `.claude/plans/[nome-utente].md`
+3. Agente presenta il piano e chiede conferma contenuto
+
 ### Flusso piano dettagliato
 
-1. L'agente crea il file `[nome-piano].md` e chiede conferma
+1. L'agente chiede nome piano, crea `.claude/plans/[nome].md` e chiede conferma contenuto
 2. Dopo conferma piano → chiede scelta modalità (Junior/Senior/RALPH)
 3. **Modalità Junior/Senior**: implementazione manuale con tracking in `[nome-piano]_progress.md`
 4. **Modalità RALPH**: conversione automatica in `scripts/ralph/prd.json` + esecuzione autonoma
