@@ -1,0 +1,179 @@
+# Claude Code - Prompt Suggeriti per Categoria
+
+> Estratto e categorizzato da: Common workflows - Claude Code Docs
+
+---
+
+## 1. COMPRENDERE LE CODEBASE
+
+Prompt per ottenere una panoramica rapida e approfondire la struttura del codice:
+
+- `dammi una panoramica di questa codebase`
+- `spiega i principali pattern architetturali usati qui`
+- `quali sono i modelli dati principali?`
+- `come viene gestita l'autenticazione?`
+
+---
+
+## 2. TROVARE E LOCALIZZARE IL CODICE
+
+Prompt per localizzare funzionalità specifiche, file e capire le interazioni tra componenti:
+
+- `trova i file che gestiscono l'autenticazione dell'utente`
+- `come lavorano insieme questi file di autenticazione?`
+- `traccia il processo di login da front-end a database`
+
+---
+
+## 3. CORREZIONE BUG
+
+Prompt per identificare, comprendere e correggere bug:
+
+- `sto vedendo un errore quando eseguo npm test`
+- `suggerisci alcuni modi per correggere il @ts-ignore in user.ts`
+- `aggiorna user.ts per aggiungere il null check che hai suggerito`
+
+---
+
+## 4. REFACTORING DEL CODICE
+
+Prompt per modernizzare e migliorare il codice esistente:
+
+- `trova l'uso di API deprecate nella nostra codebase`
+- `suggerisci come refactorizzare utils.js per usare le moderne funzionalità JavaScript`
+- `refactorizza utils.js per usare le funzionalità ES2024 mantenendo lo stesso comportamento`
+- `esegui i test per il codice refactorizzato`
+
+---
+
+## 5. UTILIZZO DEI SUBAGENTI
+
+Prompt per sfruttare gli AI subagenti specializzati per compiti specifici:
+
+- `/agents` (visualizza gli subagenti disponibili)
+- `rivedi le mie recenti modifiche al codice per problemi di sicurezza`
+- `esegui tutti i test e correggi eventuali errori`
+- `usa il subagente code-reviewer per controllare il modulo di autenticazione`
+- `fai in modo che il subagente debugger indaghi sul perché gli utenti non riescono ad accedere`
+
+---
+
+## 6. MODALITÀ PIANIFICAZIONE (Analisi Complessa)
+
+Prompt per creare piani dettagliati prima di implementare modifiche:
+
+- `ho bisogno di refactorizzare il nostro sistema di autenticazione per usare OAuth2. Crea un piano di migrazione dettagliato.`
+- `che dire della compatibilità all'indietro?`
+- `come dovremmo gestire la migrazione del database?`
+- `analizza il sistema di autenticazione e suggerisci miglioramenti`
+
+---
+
+## 7. RACCOLTA REQUISITI (Modalità Intervista)
+
+Prompt per far fare a Claude domande chiarificatrici:
+
+- `intervistami su questa funzionalità prima di iniziare: sistema di notifica utente`
+- `aiutami a riflettere sui requisiti per l'autenticazione facendo domande`
+- `fai domande chiarificatrici per definire questa specifica: elaborazione pagamenti`
+
+---
+
+## 8. TESTING
+
+Prompt per identificare, generare ed eseguire test:
+
+- `trova funzioni in NotificationsService.swift non coperte dai test`
+- `aggiungi test per il servizio di notifica`
+- `aggiungi casi di test per condizioni limite nel servizio di notifica`
+- `esegui i nuovi test e correggi eventuali errori`
+
+---
+
+## 9. PULL REQUEST
+
+Prompt per creare e revisionare pull request:
+
+- `riassumi le modifiche che ho apportato al modulo di autenticazione`
+- `crea una pr`
+- `migliora la descrizione della PR con più contesto sui miglioramenti di sicurezza`
+- `aggiungi informazioni su come questi cambiamenti sono stati testati`
+
+---
+
+## 10. DOCUMENTAZIONE
+
+Prompt per generare e migliorare la documentazione del codice:
+
+- `trova funzioni senza appropriati commenti JSDoc nel modulo di autenticazione`
+- `aggiungi commenti JSDoc alle funzioni non documentate in auth.js`
+- `migliora la documentazione generata con più contesto e esempi`
+- `controlla se la documentazione segue i nostri standard di progetto`
+
+---
+
+## 11. ANALISI DI IMMAGINI E CONTENUTI VISIVI
+
+Prompt per analizzare immagini, screenshot, diagrammi e mockup di design:
+
+- `cosa mostra questa immagine?`
+- `descrivi gli elementi UI in questo screenshot`
+- `ci sono elementi problematici in questo diagramma?`
+- `ecco uno screenshot dell'errore. Cosa lo causa?`
+- `questo è il nostro schema database attuale. Come dovremmo modificarlo per la nuova funzionalità?`
+- `genera CSS per corrispondere a questo mockup di design`
+- `quale struttura HTML ricreerebbe questo componente?`
+
+---
+
+## 12. RIFERIMENTI A FILE E DIRECTORY
+
+Prompt per referenziare e analizzare file e directory:
+
+- `spiega la logica in @src/utils/auth.js`
+- `qual è la struttura di @src/components?`
+- `mostrami i dati da @github:repos/owner/repo/issues`
+
+---
+
+## 13. RAGIONAMENTO ESTESO / DECISIONI ARCHITETTURALI
+
+Prompt per ragionamento profondo e risoluzione di problemi complessi:
+
+- `ultrathink: progetta un livello di caching per la nostra API`
+
+---
+
+## 14. VERIFICA E LINTING (Stile Unix)
+
+Prompt per revisione del codice e controlli di qualità:
+
+- `sei un linter. per favore guarda i cambiamenti vs. main e segnala eventuali problemi legati a typo. segnala il nome del file e il numero di riga su una riga, e una descrizione del problema sulla seconda riga. non restituire nessun altro testo.`
+
+---
+
+## 15. DOMANDE SULLE FUNZIONALITÀ
+
+Prompt per chiedere a Claude informazioni sulle sue funzionalità e limitazioni:
+
+- `Claude Code può creare pull request?`
+- `come gestisce Claude Code i permessi?`
+- `quali slash command sono disponibili?`
+- `come uso MCP con Claude Code?`
+- `come configuro Claude Code per Amazon Bedrock?`
+- `quali sono i limiti di Claude Code?`
+
+---
+
+## Riepilogo
+
+**Totale: 63 prompt distinti suggeriti** in **15 categorie**
+
+Questa collezione copre tutti i principali workflow nello sviluppo con Claude Code, inclusi:
+- Analisi e comprensione del codice
+- Correzione di bug e debugging
+- Refactoring e modernizzazione
+- Testing e garanzia di qualità
+- Documentazione
+- Analisi di contenuti visivi
+- Pianificazione e raccolta requisiti
