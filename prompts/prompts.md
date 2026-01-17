@@ -1,28 +1,32 @@
 # Prompt Riutilizzabili
 
+> **Nota**: Questo file contiene template generici riutilizzabili. Per workflow specifici di questo progetto, vedi [AGENT_GUIDELINES.md](../docs/AGENT_GUIDELINES.md)
+
+---
+
 ## Implementa Piano
 
 ```
-Vorrei implementare il piano presente in C:\Users\angelo.asperti\.claude\plans\[NOME-PIANO].md
+Vorrei implementare il piano presente in .claude/plans/[NOME-PIANO].md
 
 Prima di procedere, leggi e applica le linee guida presenti in:
-- C:\Users\angelo.asperti\.claude\AGENT_CORE.md
-- C:\Users\angelo.asperti\.claude\AGENT_GUIDELINES.md
-- C:\Users\angelo.asperti\.claude\AGENT_PLANNING.md
-- C:\Users\angelo.asperti\.claude\RALPH_IMPLEMENTATION_GUIDE.md
+- docs/AGENT_CORE.md
+- docs/AGENT_GUIDELINES.md
+- docs/AGENT_PLANNING.md
+- docs/RALPH_IMPLEMENTATION_GUIDE.md
 
 Procedi con l'implementazione seguendo le raccomandazioni.
 ```
 
 **Esempio concreto:**
 ```
-Vorrei implementare il piano presente in C:\Users\angelo.asperti\.claude\plans\rustling-launching-brook.md
+Vorrei implementare il piano presente in .claude/plans/rustling-launching-brook.md
 
 Prima di procedere, leggi e applica le linee guida presenti in:
-- C:\Users\angelo.asperti\.claude\AGENT_CORE.md
-- C:\Users\angelo.asperti\.claude\AGENT_GUIDELINES.md
-- C:\Users\angelo.asperti\.claude\AGENT_PLANNING.md
-- C:\Users\angelo.asperti\.claude\RALPH_IMPLEMENTATION_GUIDE.md
+- guidelines/AGENT_CORE.md
+- docs/AGENT_GUIDELINES.md
+- guidelines/AGENT_PLANNING.md
+- docs/RALPH_IMPLEMENTATION_GUIDE.md
 
 Procedi con l'implementazione seguendo le raccomandazioni.
 ```
@@ -35,9 +39,9 @@ Procedi con l'implementazione seguendo le raccomandazioni.
 Vorrei creare un piano per: [DESCRIZIONE TASK]
 
 Prima di procedere, leggi e applica le linee guida presenti in:
-- C:\Users\angelo.asperti\.claude\AGENT_CORE.md
-- C:\Users\angelo.asperti\.claude\AGENT_GUIDELINES.md
-- C:\Users\angelo.asperti\.claude\AGENT_PLANNING.md
+- guidelines/AGENT_CORE.md
+- docs/AGENT_GUIDELINES.md
+- guidelines/AGENT_PLANNING.md
 
 Analizza il codebase e crea un piano dettagliato seguendo le best practices.
 ```
