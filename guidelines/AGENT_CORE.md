@@ -8,7 +8,7 @@ Definisce comportamento e modalità di interazione dell'agente per supporto a pi
 
 - [AGENT_PLANNING.md](./AGENT_PLANNING.md) - Pianificazione e modalità implementazione
 - [AGENT_DEVELOPMENT.md](./AGENT_DEVELOPMENT.md) - Pattern, testing, principi tecnici
-- [RALPH_IMPLEMENTATION_GUIDE.md](../docs/RALPH_IMPLEMENTATION_GUIDE.md) - Modalità esecuzione autonoma
+- [RALPH_IMPLEMENTATION_GUIDE.md](./RALPH_IMPLEMENTATION_GUIDE.md) - Modalità esecuzione autonoma
 
 ---
 

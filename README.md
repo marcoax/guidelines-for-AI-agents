@@ -36,13 +36,13 @@ Rules/
 ├── README.md                          ← Questo file
 │
 ├── docs/
-│   ├── AGENT_GUIDELINES.md            ← FONTE UNICA (guida completa)
-│   └── RALPH_IMPLEMENTATION_GUIDE.md  ← Modalità autonoma (opzionale)
+│   └── AGENT_GUIDELINES.md            ← FONTE UNICA (guida completa)
 │
 ├── guidelines/                        ← Quick reference (modulari)
 │   ├── AGENT_CORE.md                  ← Comunicazione e principi
 │   ├── AGENT_PLANNING.md              ← Pianificazione
-│   └── AGENT_DEVELOPMENT.md           ← Sviluppo e pattern
+│   ├── AGENT_DEVELOPMENT.md           ← Sviluppo e pattern
+│   └── RALPH_IMPLEMENTATION_GUIDE.md  ← Modalità autonoma (opzionale)
 │
 └── prompts/                           ← Collezioni prompt
     ├── claude_prompt_it.md            ← 63 prompts (Italiano)
@@ -147,7 +147,7 @@ Agent esegue:
 ### RALPH Modalità Autonoma (opzionale)
 
 Per esecuzione autonoma iterativa con tracking automatico:
-- Leggi [RALPH_IMPLEMENTATION_GUIDE.md](docs/RALPH_IMPLEMENTATION_GUIDE.md)
+- Leggi [RALPH_IMPLEMENTATION_GUIDE.md](guidelines/RALPH_IMPLEMENTATION_GUIDE.md)
 - Setup: `scripts/ralph/prd.json`, `tasks-state.txt`, progress tracking
 - Troubleshooting: Loop bloccati, prd.json malformato, rollback procedure
 
@@ -196,7 +196,7 @@ Proposta fix:
 - ⚡ [AGENT_CORE.md](guidelines/AGENT_CORE.md) - Comunicazione quick ref
 - 📋 [AGENT_PLANNING.md](guidelines/AGENT_PLANNING.md) - Piano quick ref
 - 🛠 [AGENT_DEVELOPMENT.md](guidelines/AGENT_DEVELOPMENT.md) - Sviluppo quick ref
-- 🤖 [RALPH_IMPLEMENTATION_GUIDE.md](docs/RALPH_IMPLEMENTATION_GUIDE.md) - Esecuzione autonoma
+- 🤖 [RALPH_IMPLEMENTATION_GUIDE.md](guidelines/RALPH_IMPLEMENTATION_GUIDE.md) - Esecuzione autonoma
 - 💬 [Prompts IT](prompts/claude_prompt_it.md) / [Prompts EN](prompts/claude_prompt.md)
 
 ---
