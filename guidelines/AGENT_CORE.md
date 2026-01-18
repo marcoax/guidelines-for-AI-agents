@@ -33,24 +33,12 @@ Tecnico, conciso, diretto.
 Regole:
 
 - Frasi brevi e chiare
-- No emoji
+- No emoji in prose (usa 🔴🟡🟢 solo per severity, 📖📋🛠 per UI)
 - No spiegazioni testuali (solo commenti inline nel codice se necessario)
 - Proposta diretta + alternative + conferma
 - Checklist sempre visibile all'inizio di ogni task
 
-Esempio formato risposta:
-
-```
-Implemento Redis per cache API:
-- TTL configurabile
-- Invalidazione per chiave
-
-Alternative:
-- HTTP cache (più semplice, meno controllo)
-- In-memory (no sharing)
-
-Procedo con Redis?
-```
+Vedi: [docs/COMMUNICATION_STYLE.md](../docs/COMMUNICATION_STYLE.md) per dettagli ed esempi
 
 ---
 
@@ -65,21 +53,15 @@ Prima di iniziare:
 - [ ] Identifico dipendenze/blocchi tecnici
 ```
 
-S
-
 ### 2. Piano e implementazione
 
-Piano sempre in stile conciso. Evitare codice se non esplicitamente richiesto.
+Piano in stile conciso. Evitare codice se non esplicitamente richiesto.
 
-Prima di generare il piano, chiedere se includere esempi di codice.
+Vedi: **[AGENT_PLANNING.md](./AGENT_PLANNING.md)** per dettagli modalità
 
-Per pianificazione dettagliata e scelta modalità → **[AGENT_PLANNING.md](./AGENT_PLANNING.md)**
+Vedi: **[AGENT_DEVELOPMENT.md](./AGENT_DEVELOPMENT.md)** per pattern reuse
 
-Per pattern reuse e best practice → **[AGENT_DEVELOPMENT.md](./AGENT_DEVELOPMENT.md)** (todo)
-
-### 3. Codice
-
-Commenti inline solo se necessario per logiche complesse.
+Vedi: [docs/WORKFLOW.md](../docs/WORKFLOW.md) per processo completo
 
 ---
 
@@ -100,29 +82,15 @@ Criticità categorizzate per severità:
 
 L'agente si ferma solo per criticità bloccanti.
 
+Vedi: [docs/CRITICALITY_HANDLING.md](../docs/CRITICALITY_HANDLING.md) per decision matrix e recovery strategies
+
 ---
 
 ## Gestione modifiche
 
-Formato diff-style obbligatorio:
+Formato diff-style: AGGIUNGE | MODIFICA | RIMUOVE | MANTIENE
 
-```
-Modifiche richieste su [componente]:
-
-AGGIUNGE:
-- [elemento nuovo]
-
-MODIFICA:
-- [elemento esistente]: da X a Y
-
-RIMUOVE:
-- [elemento da eliminare]
-
-MANTIENE:
-- [elemento invariato]
-
-Procedo?
-```
+Vedi: [docs/COMMUNICATION_STYLE.md](../docs/COMMUNICATION_STYLE.md) per template completo
 
 ---
 
@@ -137,42 +105,18 @@ L'agente NON:
 
 ---
 
-## Segnalazione problemi documento
+## Feedback su linee guida
 
-Se l'agente rileva errori o ambiguità in queste linee guida:
+Se rilevi errori o ambiguità in queste linee guida durante sviluppo:
 
-**Formato a fine task:**
+Vedi: [docs/FEEDBACK_MECHANISM.md](../docs/FEEDBACK_MECHANISM.md) per template e workflow completo
 
-```
----
-📋 Feedback linee guida:
-
-Problema: [descrizione ambiguità/errore]
-Sezione: [nome sezione]
-
-Proposta fix:
-[testo corretto suggerito]
-```
-
-L'agente NON blocca il task, continua e segnala al termine.
-
----
-
-## Aggiornamenti linee guida
-
-Quando durante lo sviluppo/implementazione emergono nuove esigenze o criticità non coperte, l'agente può proporre aggiornamenti a queste linee guida.
-
-**Formato proposta:**
+**Quick template:**
 
 ```
----
-🛠 Proposta aggiornamento linee guida:
-
-Sezione: [nome sezione]
-Problema: [descrizione esigenza non coperta]
-
-Proposta fix:
-[testo aggiornamento suggerito]
+📋 Feedback: [problema]
+Sezione: [file:line]
+Proposta: [fix suggerito]
 ```
 
-L'agente attende conferma prima di applicare l'aggiornamento.
+Segnala a fine task, NON bloccare implementazione corrente.

@@ -3,11 +3,11 @@
 ## Quando usare RALPH
 
 Ralph viene attivato quando:
-1. L'utente sceglie "RALPH" dopo conferma del piano (vedi AGENT_GUIDELINES.md)
+1. L'utente sceglie "RALPH" dopo conferma del piano (vedi [AGENT_PLANNING.md](./AGENT_PLANNING.md))
 2. L'agente converte automaticamente il piano in `scripts/ralph/prd.json`
 3. Avvia esecuzione autonoma con loop iterativi
 
-**Vedi AGENT_GUIDELINES.md sezione "Modalità RALPH"** per dettagli integrazione con workflow core.
+**Vedi [AGENT_PLANNING.md](./AGENT_PLANNING.md) sezione "Modalità RALPH"** per dettagli integrazione con workflow core.
 
 ---
 

@@ -87,81 +87,39 @@ Su richiesta esplicita, l'agente genera piano dettagliato in .md:
 
 L'agente sceglie autonomamente il tipo appropriato in base al contesto.
 
-### Posizione obbligatoria
-
-**Piano:**
-
-- Salvato automaticamente in `~/.claude/plans/[nome-piano].md` (home directory, gestito da Claude Code)
-- Globale per sessione, non per-progetto
-- Accessibile via `ExitPlanMode` al termine della pianificazione
-
-**Progress Tracking:**
-
-- Salvato in `progress/[nome-progetto]_progress.md` (nel repo)
-- Obbligatorio per piani .md o implementazioni con 3+ task
-- Traccia lo stato di avanzamento locale
-
-**Workflow creazione piano:**
-
-1. Agente chiede all'utente: "Nome per il piano? (es: auth-system, api-refactor)"
-2. Agente crea piano (Claude Code lo salva in `~/.claude/plans/[nome].md`)
-3. Agente presenta il piano e chiede conferma contenuto
-4. Dopo implementazione: creare `progress/[nome]_progress.md` nel repo
-
-### Flusso piano dettagliato
-
-1. L'agente chiede nome piano, Claude Code lo salva in `~/.claude/plans/[nome].md` e chiede conferma contenuto
-2. Dopo conferma piano → chiede scelta modalità (Junior/Senior/RALPH)
-3. **Modalità Junior/Senior**: implementazione manuale con tracking in `progress/[nome]_progress.md` (repo)
-4. **Modalità RALPH**: conversione automatica in `scripts/ralph/prd.json` + esecuzione autonoma
-
 ---
 
-## Tracking Progress (Junior/Senior)
+## Ownership & Automazione
 
-L'agente DEVE mantenere un file di tracking aggiornato incrementalmente durante l'implementazione.
+### Piano (.md file)
 
-**Nome file:** `[nome-progetto]_progress.md`
+**Creato da:** Claude Code (automatico via `ExitPlanMode`)
 
-**Posizione:** `[root-progetto]/progress/[nome-progetto]_progress.md`
+**Storage:** `~/.claude/plans/[nome].md` (home directory user)
+
+**Scope:** Session-global, non per-progetto
 
 **Workflow:**
+1. Agent chiede nome piano all'utente
+2. Claude Code salva automaticamente in `~/.claude/plans/[nome].md`
+3. Agent presenta piano, chiede conferma contenuto
+4. Dopo conferma → scelta modalità implementazione
 
-1. Al primo task: creare cartella `progress/` (se non esiste) e file progress con stato IN_PROGRESS
-2. Ad ogni task completato: aggiornare il file con il nuovo task
-3. Al termine: aggiornare stato a COMPLETATO
+### Progress Tracking
 
-**Formato:**
+**Creato da:** Agent (MUST create at first task)
 
-```markdown
-# Progress: [Nome Progetto]
+**Storage:** `progress/[nome]_progress.md` (nel repo corrente)
 
-## Stato: COMPLETATO | IN_PROGRESS
+**Scope:** Locale al repository
 
-## Task Completati
-
-| #   | Task               | Status     | Note             |
-| --- | ------------------ | ---------- | ---------------- |
-| 1   | [descrizione task] | completato | [eventuali note] |
-| 2   | [descrizione task] | completato |                  |
-| 3   | [descrizione task] | completato |                  |
-
-## File Creati/Modificati
-
-- `path/to/file1.php` - [descrizione]
-- `path/to/file2.php` - [descrizione]
-
-## Verifica
-
-- [x] Test eseguiti: [risultato]
-- [x] Build: OK/KO
-
-## Note Finali
-
-[Eventuali osservazioni o problemi riscontrati]
-```
+**Workflow:**
+1. Al primo task: Agent MUST create `progress/` dir + file con stato IN_PROGRESS
+2. Ad ogni task completato: Agent aggiorna incrementalmente
+3. Al termine: Agent marca stato COMPLETATO
 
 **Obbligatorio per:**
+- Piani salvati come .md
+- Implementazioni con 3+ task
 
-- Progetti con piano .md
-- Implementazioni con piu' di 3 task
+**Formato:** Vedi [docs/WORKFLOW.md](../docs/WORKFLOW.md) per template completo
