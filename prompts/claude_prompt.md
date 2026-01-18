@@ -170,6 +170,7 @@ Prompts for asking Claude about its features and limitations:
 **Total: 63 distinct suggested prompts** across **15 categories**
 
 This collection covers all major workflows in Claude Code development including:
+
 - Code analysis and understanding
 - Bug fixing and debugging
 - Refactoring and modernization
@@ -177,3 +178,62 @@ This collection covers all major workflows in Claude Code development including:
 - Documentation
 - Visual content analysis
 - Planning and requirements gathering
+
+## 16. AGENT
+
+prompts. for create AGENT.md , Claude.md
+
+I want you to refactor my AGENTS.md file to follow progressive disclosure principles.
+
+Follow these steps:
+
+1. **Find contradictions**: Identify any instructions that conflict with each other. For each contradiction, ask me which version I want to keep.
+
+2. **Identify the essentials**: Extract only what belongs in the root AGENTS.md:
+   - One-sentence project description
+   - Package manager (if not npm)
+   - Non-standard build/typecheck commands
+   - Anything truly relevant to every single task
+
+3. **Group the rest**: Organize remaining instructions into logical categories (e.g., TypeScript conventions, testing patterns, API design, Git workflow). For each group, create a separate markdown file.
+
+4. **Create the file structure**: Output:
+   - A minimal root AGENTS.md with markdown links to the separate files
+   - Each separate file with its relevant instructions
+   - A suggested docs/ folder structure
+
+5. **Flag for deletion**: Identify any instructions that are:
+   - Redundant (the agent already knows this)
+   - Too vague to be actionable
+   - Overly obvious (like "write clean code")
+
+I want you to refactor my CLAUDE.md file to follow progressive disclosure principles.
+
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+
+Follow these steps:
+
+1. **Find contradictions**: Identify any instructions that conflict with each other. For each contradiction, ask me which version I want to keep.
+
+2. **Identify the essentials**: Extract only what belongs in the root CLAUDE.md:
+   - One-sentence project description
+   - Package manager (if not npm)
+   - Non-standard build/typecheck commands
+   - Anything truly relevant to every single task
+
+3. **Group the rest**: Organize remaining instructions into logical categories (e.g., TypeScript conventions, testing patterns, API design, Git workflow). For each group, create a separate markdown file.
+
+4. **Create the file structure**: Output:
+   - A minimal root CLADUE.md with markdown links to the separate files
+   - Each separate file with its relevant instructions
+   - A suggested docs/ folder structure
+
+5. **Flag for deletion**: Identify any instructions that are:
+   - Redundant (the agent already knows this)
+   - Too vague to be actionable
+   - Overly obvious (like "write clean code")
+
+## Plan Mode
+
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any.

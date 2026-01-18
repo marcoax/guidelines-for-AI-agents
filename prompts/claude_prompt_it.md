@@ -208,6 +208,7 @@ Prompt per chiedere a Claude informazioni sulle sue funzionalità e limitazioni:
 **Totale: 63 prompt distinti suggeriti** in **15 categorie**
 
 Questa collezione copre tutti i principali workflow nello sviluppo con Claude Code, inclusi:
+
 - Analisi e comprensione del codice
 - Correzione di bug e debugging
 - Refactoring e modernizzazione
@@ -215,3 +216,8 @@ Questa collezione copre tutti i principali workflow nello sviluppo con Claude Co
 - Documentazione
 - Analisi di contenuti visivi
 - Pianificazione e raccolta requisiti
+
+## Modalità Piano
+
+- Rendi il piano estremamente conciso. Sacrifica la grammatica per la concisione.
+- Alla fine di ogni piano, fornisci un elenco di domande irrisolte a cui rispondere, se presenti.
