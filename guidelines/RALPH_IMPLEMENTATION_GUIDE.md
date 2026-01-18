@@ -3,11 +3,36 @@
 ## Quando usare RALPH
 
 Ralph viene attivato quando:
-1. L'utente sceglie "RALPH" dopo conferma del piano (vedi AGENT_GUIDELINES_v2.md)
+1. L'utente sceglie "RALPH" dopo conferma del piano (vedi [AGENT_PLANNING.md](./AGENT_PLANNING.md))
 2. L'agente converte automaticamente il piano in `scripts/ralph/prd.json`
 3. Avvia esecuzione autonoma con loop iterativi
 
-**Da AGENT_GUIDELINES_v2 →** questa guida per dettagli tecnici completi.
+**Vedi [AGENT_PLANNING.md](./AGENT_PLANNING.md) sezione "Modalità RALPH"** per dettagli integrazione con workflow core.
+
+---
+
+## PREREQUISITI & SETUP
+
+### Configurazione iniziale
+
+Prima di attivare RALPH modalità:
+
+1. **Directory scripts/ralph/**
+   ```bash
+   mkdir -p scripts/ralph
+   ```
+
+2. **File configurazione** (creati automaticamente da agente al primo loop)
+   - `scripts/ralph/prd.json` - Definizioni task (non modificare manualmente)
+   - `scripts/ralph/tasks-state.txt` - Stato esecuzione (aggiornato ad ogni loop)
+
+3. **PROMPT.md** - Crea file di prompt con istruzioni RALPH (vedi sezione 4 di questa guida)
+
+4. **Environment** - Verifica configurazione CLI (se Ralph tool installato)
+   ```bash
+   # Se usato: ralph --version
+   # Se workflow manuale: nessuna configurazione necessaria
+   ```
 
 ---
 
@@ -335,6 +360,80 @@ Assicurati che:
 [14:48] 💾 Commit: feat: Aggiunti componenti frontend
 [14:48] ⏳ Loop 4 completato → Prossimo: Loop 5
 ```
+
+---
+
+## 10. TROUBLESHOOTING
+
+### Loop bloccati o stagnanti
+
+**Sintomo**: Stesso task ripetuto in più loop.
+
+**Cause possibili**:
+- Task troppo complesso (dividere in sub-task)
+- Dipendenza non risolvibile
+- PRD.json malformato
+
+**Soluzione**:
+1. Interrompere esecuzione
+2. Analizzare tasks-state.txt
+3. Aggiornare prd.json: segnare task come "blocked" o dividerlo
+4. Riavviare
+
+### prd.json malformato
+
+**Sintomo**: Parsing error, processo crash.
+
+**Verificare**:
+```json
+{
+  "project": "string",     // ✓ obbligatorio
+  "version": "string",     // ✓ obbligatorio
+  "tasks": [               // ✓ obbligatorio, array
+    {
+      "id": "string",      // ✓ unique
+      "title": "string",   // ✓
+      "description": "string",
+      "priority": number,  // ✓ 1-5
+      "effort": "low|medium|high",
+      "scope": "backend|frontend",
+      "status": "todo|done|blocked"
+    }
+  ]
+}
+```
+
+### Progress.md non aggiornato
+
+**Sintomo**: File rimane fermo o non creato.
+
+**Soluzione**:
+1. Verificare permessi directory `progress/`
+2. Verificare formato progress.md corrisponde schema
+3. Verificare agente ha accesso write
+
+### Implementazione fallita, code broken
+
+**Rollback procedure**:
+```bash
+# 1. Identificare commit ultimo OK
+git log --oneline | head -5
+
+# 2. Reset a commit prima del loop fallito
+git reset --hard <commit-hash>
+
+# 3. Aggiornare tasks-state.txt: segnare task come "failed"
+# 4. Aggiornare prd.json: proposte alternative
+# 5. Riavviare Ralph
+```
+
+### Coverage limite API
+
+**Se raggiunto limite API durante loop**:
+1. RALPH s'interrompe automaticamente
+2. Aggiornare progress.md con stato attuale
+3. Riprendere nella sessione successiva (continua da task next)
+4. Incrementare API limit per sessione successiva
 
 ---
 

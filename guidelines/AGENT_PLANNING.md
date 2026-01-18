@@ -5,6 +5,7 @@
 Ogni implementazione richiede piano prima del codice.
 
 Formato standard (sequenza numerata sintetica):
+
 ```
 Piano implementazione [feature]:
 
@@ -31,25 +32,28 @@ Scegli modalità implementazione:
 ( ) Senior  - Implementazione rapida, output sintetico
 ( ) RALPH   - Esecuzione autonoma iterativa
 
-📖 Dettagli RALPH: vedi ../docs/RALPH_IMPLEMENTATION_GUIDE.md
+📖 Dettagli RALPH: vedi ./RALPH_IMPLEMENTATION_GUIDE.md
 ```
 
 ### Modalità Junior
+
 - Implementazione step-by-step con spiegazioni
 - Attesa conferma esplicita ("ok", "procedi") ad ogni step
 - Output dettagliato con contesto
 
 ### Modalità Senior
+
 - Implementazione rapida senza attese intermedie
 - Output sintetico, focus su risultati
 - Commenti inline solo se necessario
 
 ### Modalità RALPH
+
 - Conversione automatica piano → `scripts/ralph/prd.json`
 - Esecuzione autonoma con loop iterativi
 - Tracking automatico in `[progetto]_progress.md`
 - Output minimo: solo stato avanzamento e completamento
-- 📖 [Guida completa RALPH](../docs/RALPH_IMPLEMENTATION_GUIDE.md)
+- 📖 [Guida completa RALPH](./RALPH_IMPLEMENTATION_GUIDE.md)
 
 ---
 
@@ -58,74 +62,64 @@ Scegli modalità implementazione:
 Su richiesta esplicita, l'agente genera piano dettagliato in .md:
 
 ### Tipo A - Piano tecnico/progetto
+
 ```markdown
 # Piano Progetto: [Nome]
+
 ## Architettura
+
 ## Fasi
+
 ## Timeline stimata
 ```
 
 ### Tipo B - Piano implementazione esteso
+
 ```markdown
 # Piano Implementazione: [Nome]
+
 ## 1. [Componente]
+
 ### Dettagli tecnici
+
 ### Dipendenze
 ```
 
 L'agente sceglie autonomamente il tipo appropriato in base al contesto.
 
-### Flusso piano dettagliato
-
-1. L'agente crea il file `[nome-piano].md` e chiede conferma
-2. Dopo conferma piano → chiede scelta modalità (Junior/Senior/RALPH)
-3. **Modalità Junior/Senior**: implementazione manuale con tracking in `[nome-piano]_progress.md`
-4. **Modalità RALPH**: conversione automatica in `scripts/ralph/prd.json` + esecuzione autonoma
-
 ---
 
-## Tracking Progress (Junior/Senior)
+## Ownership & Automazione
 
-L'agente DEVE mantenere un file di tracking aggiornato incrementalmente durante l'implementazione.
+### Piano (.md file)
 
-**Nome file:** `[nome-progetto]_progress.md`
+**Creato da:** Claude Code (automatico via `ExitPlanMode`)
 
-**Posizione:** `[root-progetto]/progress/[nome-progetto]_progress.md`
+**Storage:** `~/.claude/plans/[nome].md` (home directory user)
+
+**Scope:** Session-global, non per-progetto
 
 **Workflow:**
-1. Al primo task: creare cartella `progress/` (se non esiste) e file progress con stato IN_PROGRESS
-2. Ad ogni task completato: aggiornare il file con il nuovo task
-3. Al termine: aggiornare stato a COMPLETATO
+1. Agent chiede nome piano all'utente
+2. Claude Code salva automaticamente in `~/.claude/plans/[nome].md`
+3. Agent presenta piano, chiede conferma contenuto
+4. Dopo conferma → scelta modalità implementazione
 
-**Formato:**
-```markdown
-# Progress: [Nome Progetto]
+### Progress Tracking
 
-## Stato: COMPLETATO | IN_PROGRESS
+**Creato da:** Agent (MUST create at first task)
 
-## Task Completati
+**Storage:** `progress/[nome]_progress.md` (nel repo corrente)
 
-| # | Task | Status | Note |
-|---|------|--------|------|
-| 1 | [descrizione task] | completato | [eventuali note] |
-| 2 | [descrizione task] | completato | |
-| 3 | [descrizione task] | completato | |
+**Scope:** Locale al repository
 
-## File Creati/Modificati
-
-- `path/to/file1.php` - [descrizione]
-- `path/to/file2.php` - [descrizione]
-
-## Verifica
-
-- [x] Test eseguiti: [risultato]
-- [x] Build: OK/KO
-
-## Note Finali
-
-[Eventuali osservazioni o problemi riscontrati]
-```
+**Workflow:**
+1. Al primo task: Agent MUST create `progress/` dir + file con stato IN_PROGRESS
+2. Ad ogni task completato: Agent aggiorna incrementalmente
+3. Al termine: Agent marca stato COMPLETATO
 
 **Obbligatorio per:**
-- Progetti con piano .md
-- Implementazioni con piu' di 3 task
+- Piani salvati come .md
+- Implementazioni con 3+ task
+
+**Formato:** Vedi [docs/WORKFLOW.md](../docs/WORKFLOW.md) per template completo
