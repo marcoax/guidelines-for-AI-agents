@@ -17,6 +17,13 @@ Checklist → Piano → Modalità → Implementazione
 
 ---
 
+## Modalità Piano
+
+- Rendi il piano estremamente conciso. Sacrifica la grammatica per la concisione.
+- Alla fine di ogni piano, fornisci un elenco di domande irrisolte a cui rispondere, se presenti.
+
+---
+
 ## Quick Reference
 
 - [AGENT_CORE.md](guidelines/AGENT_CORE.md) - Comportamento, comunicazione
