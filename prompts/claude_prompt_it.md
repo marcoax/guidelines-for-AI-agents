@@ -248,14 +248,15 @@ Segui questi passaggi:
 - Rendi il piano estremamente conciso. Sacrifica la grammatica per la concisione.
 - Alla fine di ogni piano, dammi una lista di domande irrisolte a cui rispondere, se presenti.
 
-### Plan Mode
+## 17 STACK Tecnologico
 
-- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
-- At the end of each plan, give me a list of unresolved questions to answer, if any.
+Analizza il progetto nella directory corrente (package.json, composer.json, file di configurazione) e aggiungi all'INIZIO del file CLAUDE.md un riepilogo conciso delle tecnologie utilizzate:
 
+**Stack Tecnologico**
 
+- **Frontend**: [framework, librerie UI, gestione stato]
+- **Backend**: [linguaggi, framework, API]
+- **Database**: [tipo di database, ORM/query builder]
+- **Altri strumenti**: [deployment, testing, package manager]
 
-## Modalità Piano
-
-- Rendi il piano estremamente conciso. Sacrifica la grammatica per la concisione.
-- Alla fine di ogni piano, fornisci un elenco di domande irrisolte a cui rispondere, se presenti.
+Mantieni ogni punto su una riga singola. Inserisci questa sezione come primo contenuto del file, prima di tutto il resto.
