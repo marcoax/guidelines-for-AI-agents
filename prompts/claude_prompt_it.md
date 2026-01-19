@@ -265,6 +265,7 @@ Mantieni ogni punto su una riga singola. Inserisci questa sezione come primo con
 ## 18 SKILLS
 
 ### agent-md-creator
+claude --skill agent-md-creator "Crea un CLAUDE.md"
 Crea un CLAUDE.md per questo progetto
 Generate AGENT.md
 Setup project documentation
