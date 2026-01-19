@@ -260,3 +260,11 @@ Analizza il progetto nella directory corrente (package.json, composer.json, file
 - **Altri strumenti**: [deployment, testing, package manager]
 
 Mantieni ogni punto su una riga singola. Inserisci questa sezione come primo contenuto del file, prima di tutto il resto.
+
+
+## 18 SKILLS
+
+### agent-md-creator
+Crea un CLAUDE.md per questo progetto
+Generate AGENT.md
+Setup project documentation
