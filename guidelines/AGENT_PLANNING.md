@@ -109,7 +109,7 @@ L'agente sceglie autonomamente il tipo appropriato in base al contesto.
 
 **Creato da:** Agent (MUST create at first task)
 
-**Storage:** `progress/[nome]_progress.md` (nel repo corrente)
+**Storage:** `progress/[nome]_progress.md` (nella [root] del progetto)
 
 **Scope:** Locale al repository
 
