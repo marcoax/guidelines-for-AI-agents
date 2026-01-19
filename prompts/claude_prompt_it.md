@@ -217,6 +217,44 @@ Questa collezione copre tutti i principali workflow nello sviluppo con Claude Co
 - Analisi di contenuti visivi
 - Pianificazione e raccolta requisiti
 
+## 16. AGENT
+prompt per creare AGENT.md, Claude.md
+
+Voglio che tu rifattorizzi il mio file AGENTS.md seguendo i principi di progressive disclosure.
+
+Segui questi passaggi:
+
+1. **Trova contraddizioni**: Identifica eventuali istruzioni in conflitto tra loro. Per ogni contraddizione, chiedimi quale versione voglio mantenere.
+
+2. **Identifica l'essenziale**: Estrai solo ciò che appartiene al file AGENTS.md principale:
+   - Descrizione del progetto in una frase
+   - Package manager (se non è npm)
+   - Comandi build/typecheck non standard
+   - Qualsiasi cosa veramente rilevante per ogni singolo task
+
+3. **Raggruppa il resto**: Organizza le istruzioni rimanenti in categorie logiche (es: convenzioni TypeScript, pattern di testing, design API, workflow Git). Per ogni gruppo, crea un file markdown separato.
+
+4. **Crea la struttura**: Genera:
+   - Un AGENTS.md principale minimale con link markdown ai file separati
+   - Ogni file separato con le relative istruzioni
+   - Una struttura suggerita per la cartella docs/
+
+5. **Segnala per eliminazione**: Identifica eventuali istruzioni che sono:
+   - Ridondanti (l'agent lo sa già)
+   - Troppo vaghe per essere azionabili
+   - Ovvie (tipo "scrivi codice pulito")
+
+### Modalità Piano
+- Rendi il piano estremamente conciso. Sacrifica la grammatica per la concisione.
+- Alla fine di ogni piano, dammi una lista di domande irrisolte a cui rispondere, se presenti.
+
+### Plan Mode
+
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any.
+
+
+
 ## Modalità Piano
 
 - Rendi il piano estremamente conciso. Sacrifica la grammatica per la concisione.
