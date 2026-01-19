@@ -233,7 +233,19 @@ Follow these steps:
    - Too vague to be actionable
    - Overly obvious (like "write clean code")
 
-## Plan Mode
+### Plan Mode
 
 - Make the plan extremely concise. Sacrifice grammar for the sake of concision.
 - At the end of each plan, give me a list of unresolved questions to answer, if any.
+
+### *Technology Stack*
+Analyze the project in the current directory (package.json, composer.json, configuration files) and add a concise summary of the technologies used at the BEGINNING of the CLAUDE.md file:
+
+**Technology Stack**
+
+- **Frontend**: [frameworks, UI libraries, state management]
+- **Backend**: [languages, frameworks, APIs]
+- **Database**: [database type, ORM/query builder]
+- **Other tools**: [deployment, testing, package manager]
+
+Keep each point on a single line. Insert this section as the first content of the file, before everything else.
