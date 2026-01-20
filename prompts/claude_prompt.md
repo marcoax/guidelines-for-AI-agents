@@ -223,3 +223,9 @@ Analyze the project in the current directory (package.json, composer.json, confi
 - **Other tools**: [deployment, testing, package manager]
 
 Keep each point on a single line. Insert this section as the first content of the file, before everything else.
+
+## RALPH
+
+Convert my feature requirements into structured PRD items.
+Each item should have: category, description, steps to verify, and passes: false.
+Format as JSON. Be specific about acceptance criteria.
