@@ -223,7 +223,12 @@ Analyze the project in the current directory (package.json, composer.json, confi
 - **Other tools**: [deployment, testing, package manager]
 
 Keep each point on a single line. Insert this section as the first content of the file, before everything else.
+## OPéTIMIZER
 
+read this 
+@SPEC.md and interview me in detail using the AskUserQuestionTool about literally anything: technical implementation, UI & UX, concerns, tradeoffs, etc. but make sure the questions are not obvious, and create a implementatio plan 
+
+be very in-depth and continue interviewing me continually until it's complete, then write the spec to the file
 ## RALPH
 
 Convert my feature requirements into structured PRD items.
