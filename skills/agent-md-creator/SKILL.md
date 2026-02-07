@@ -171,10 +171,9 @@ Before final confirmation, verify that all required reference files exist.
 
 Mandatory checks:
 
-- `STACK.md`
-- `Guidelines/agent_core.md`
-- `Guidelines/agent_development.md`
-- `Guidelines/agent_planning.md`
+- `guidelines/AGENT_CORE.md`
+- `guidelines/AGENT_DEVELOPMENT.md`
+- `guidelines/AGENT_PLANNING.md`
 
 Rules:
 
@@ -227,14 +226,14 @@ Rules:
 
 ## References
 
-At the end of this file, include a **References** section listing authoritative documentation sources for the agent.
+At the end of the generated `CLAUDE.md` or `AGENT.md`, include a **References** section listing authoritative documentation sources for the agent.
 
 Always include:
 
 - `STACK.md` — Detailed project stack and architecture reference
-- `guidelines/agent_core.md` — Core agent principles and constraints
-- `guidelines/agent_development.md` — Development rules and best practices
-- `guidelines/agent_planning.md` — Planning and task execution guidelines
+- `guidelines/AGENT_CORE.md` — Core agent principles and constraints
+- `guidelines/AGENT_DEVELOPMENT.md` — Development rules and best practices
+- `guidelines/AGENT_PLANNING.md` — Planning and task execution guidelines
 
 Rules:
 
