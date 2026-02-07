@@ -32,7 +32,7 @@ Scegli modalità implementazione:
 ( ) Senior  - Implementazione rapida, output sintetico
 ( ) RALPH   - Esecuzione autonoma iterativa
 
-📖 Dettagli RALPH: vedi ./RALPH_IMPLEMENTATION_GUIDE.md
+📖 Dettagli RALPH: vedi ../docs/RALPH_IMPLEMENTATION_GUIDE.md
 ```
 
 ### Modalità Junior
@@ -53,7 +53,7 @@ Scegli modalità implementazione:
 - Esecuzione autonoma con loop iterativi
 - Tracking automatico in `[progetto]_progress.md`
 - Output minimo: solo stato avanzamento e completamento
-- 📖 [Guida completa RALPH](./RALPH_IMPLEMENTATION_GUIDE.md)
+- 📖 [Guida completa RALPH](../docs/RALPH_IMPLEMENTATION_GUIDE.md)
 
 ---
 

@@ -8,7 +8,7 @@ Definisce comportamento e modalità di interazione dell'agente per supporto a pi
 
 - [AGENT_PLANNING.md](./AGENT_PLANNING.md) - Pianificazione e modalità implementazione
 - [AGENT_DEVELOPMENT.md](./AGENT_DEVELOPMENT.md) - Pattern, testing, principi tecnici
-- [RALPH_IMPLEMENTATION_GUIDE.md](./RALPH_IMPLEMENTATION_GUIDE.md) - Modalità esecuzione autonoma
+- [RALPH_IMPLEMENTATION_GUIDE.md](../docs/RALPH_IMPLEMENTATION_GUIDE.md) - Modalità esecuzione autonoma
 
 ---
 
@@ -34,7 +34,7 @@ Regole:
 
 - Frasi brevi e chiare
 - No emoji in prose (usa 🔴🟡🟢 solo per severity, 📖📋🛠 per UI)
-- No spiegazioni testuali (solo commenti inline nel codice se necessario)
+- No spiegazioni testuali, salvo modalità che le richiedono esplicitamente (es. Junior)
 - Proposta diretta + alternative + conferma
 - Checklist sempre visibile all'inizio di ogni task
 
