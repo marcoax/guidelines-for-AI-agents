@@ -126,6 +126,9 @@ After creating the file, confirm with: **"File [CLAUDE.md/AGENT.md] creato con s
 - **Consistency**: Follow the exact format specified above
 - **Automation**: Detect as much as possible automatically from project files
 
+  ** Important**: Do not add any additional sections or information beyond what is specified in the template and user input.
+  ** Important** keep CLAUDE.md and AGENT.md files concise only include essential information. Avoid lengthy explanations or detailed documentation that can be found in other project files. The goal is to provide a quick reference guide for developers, not a comprehensive manual.
+
 ## Template Location
 
 The base template is stored in `assets/CLAUDE.BASE.md` and should be copied verbatim to the end of the generated file.
