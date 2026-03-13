@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracker Investimento</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f2;
+      --text: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-tertiary: #888780;
+      --border: rgba(0,0,0,0.15);
+      --border-light: rgba(0,0,0,0.08);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --blue: #185FA5;
+      --blue-bg: #E6F1FB;
+      --teal: #0F6E56;
+      --teal-bg: #E1F5EE;
+      --green-light: #C0DD97;
+      --green: #639922;
+      --red: #A32D2D;
+      --red-bg: #FCEBEB;
+      --purple: #3C3489;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1c;
+        --bg-secondary: #2a2a28;
+        --text: #f0ede8;
+        --text-secondary: #b4b2a9;
+        --text-tertiary: #888780;
+        --border: rgba(255,255,255,0.15);
+        --border-light: rgba(255,255,255,0.08);
+        --blue: #85B7EB;
+        --blue-bg: #0C447C22;
+        --teal: #5DCAA5;
+        --teal-bg: #08504122;
+        --green-light: #3B6D11;
+        --green: #97C459;
+        --red: #F09595;
+        --red-bg: #501313;
+        --purple: #AFA9EC;
+      }
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.25rem; }
+    .subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 2rem; }
+
+    .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--border); }
+    .tab {
+      padding: 8px 18px; font-size: 13px; cursor: pointer;
+      border: none; border-bottom: 2px solid transparent;
+      color: var(--text-secondary); background: none;
+    }
+    .tab.active { color: var(--text); border-bottom: 2px solid var(--text); font-weight: 500; }
+    .tab:hover:not(.active) { color: var(--text); }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .form-row { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 1rem; flex-wrap: wrap; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
+    .form-group label { font-size: 12px; color: var(--text-secondary); }
+    .form-group input, .form-group select {
+      height: 36px; padding: 0 10px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px; width: 100%;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none; border-color: var(--blue);
+    }
+
+    .btn {
+      height: 36px; padding: 0 16px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px; cursor: pointer; white-space: nowrap;
+    }
+    .btn:hover { background: var(--bg-secondary); }
+    .btn-primary {
+      background: var(--text); color: var(--bg);
+      border-color: var(--text);
+    }
+    .btn-primary:hover { opacity: 0.85; background: var(--text); }
+    .btn-danger { color: var(--red); border-color: transparent; background: none; font-size: 12px; }
+    .btn-danger:hover { background: var(--red-bg); }
+
+    .section-title {
+      font-size: 13px; font-weight: 500;
+      margin: 1.25rem 0 0.6rem;
+      color: var(--text);
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 1.5rem; }
+    th { font-size: 11px; font-weight: 500; color: var(--text-secondary); text-align: left; padding: 6px 8px; border-bottom: 0.5px solid var(--border); }
+    td { padding: 8px; border-bottom: 0.5px solid var(--border-light); }
+    tr:last-child td { border-bottom: none; }
+
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+    .badge-valore { background: var(--blue-bg); color: var(--blue); }
+    .badge-versamento { background: var(--teal-bg); color: var(--teal); }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+    @media(min-width: 500px) { .stat-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+    .stat { background: var(--bg-secondary); border-radius: var(--radius); padding: 0.85rem 1rem; }
+    .stat-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .stat-val { font-size: 19px; font-weight: 500; }
+    .stat-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+    .positive { color: var(--teal); }
+    .negative { color: var(--red); }
+
+    .legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; flex-wrap: wrap; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+    .chart-wrap { position: relative; width: 100%; height: 280px; margin-bottom: 2rem; }
+
+    .empty { text-align: center; padding: 2.5rem 1rem; color: var(--text-tertiary); font-size: 13px; border: 0.5px dashed var(--border); border-radius: var(--radius); margin-bottom: 1rem; }
+
+    .hint { font-size: 12px; color: var(--text-tertiary); margin-bottom: 1.25rem; line-height: 1.5; }
+
+    .export-row { display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap; }
+
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 0.5px solid var(--border-light); font-size: 12px; color: var(--text-tertiary); }
+  </style>
+</head>
+<body>
+
+<h1>Tracker investimento</h1>
+<p class="subtitle">Inserisci i valori reali del tuo portafoglio nel tempo e calcola il rendimento annualizzato (CAGR).</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('inserisci')">Inserisci dati</button>
+  <button class="tab" onclick="showTab('analisi')">Analisi &amp; grafico</button>
+</div>
+
+<!-- TAB 1 -->
+<div class="section active" id="tab-inserisci">
+
+  <p class="hint">Aggiungi il valore del portafoglio in momenti diversi (almeno 2 per vedere l'analisi), e i versamenti aggiuntivi che hai effettuato nel tempo.</p>
+
+  <div class="section-title">Valore del portafoglio</div>
+  <div class="form-row">
+    <div class="form-group" style="max-width:160px;">
+      <label>Data</label>
+      <input type="date" id="val-date">
+    </div>
+    <div class="form-group">
+      <label>Valore (€)</label>
+      <input type="number" id="val-amount" placeholder="es. 12.500" min="0" step="0.01">
+    </div>
+    <div class="form-group" style="max-width:220px;">
+      <label>Nota (opzionale)</label>
+      <input type="text" id="val-note" placeholder="es. Dopo crollo mercato">
+    </div>
+    <button class="btn btn-primary" onclick="addValore()">+ Valore</button>
+  </div>
+
+  <div class="section-title">Versamento aggiuntivo</div>
+  <div class="form-row">
+    <div class="form-group" style="max-width:160px;">
+      <label>Data inizio</label>
+      <input type="date" id="vers-date">
+    </div>
+    <div class="form-group">
+      <label>Importo (€)</label>
+      <input type="number" id="vers-amount" placeholder="es. 500" min="0" step="0.01">
+    </div>
+    <div class="form-group" style="max-width:150px;">
+      <label>Frequenza</label>
+      <select id="vers-freq">
+        <option value="una">Una volta</option>
+        <option value="mensile">Mensile</option>
+        <option value="annuale">Annuale</option>
+      </select>
+    </div>
+    <button class="btn" onclick="addVersamento()">+ Versamento</button>
+  </div>
+
+  <div id="empty-msg" class="empty">Nessun dato ancora. Aggiungi il primo valore del portafoglio.</div>
+  <table id="entries-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Tipo</th>
+        <th>Importo</th>
+        <th>Dettaglio</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="entries-body"></tbody>
+  </table>
+
+  <div class="export-row">
+    <button class="btn" onclick="showTab('analisi')">Vai all'analisi →</button>
+    <button class="btn" onclick="exportCSV()">Esporta CSV</button>
+    <button class="btn btn-danger" onclick="clearAll()">Cancella tutto</button>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="section" id="tab-analisi">
+  <div id="no-data-msg" class="empty">Inserisci almeno 2 valori del portafoglio per vedere l'analisi.</div>
+
+  <div id="analysis-content" style="display:none;">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">Capitale investito</div>
+        <div class="stat-val" id="a-invested">—</div>
+        <div class="stat-sub">versato totale</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Valore attuale</div>
+        <div class="stat-val" id="a-current" style="color:var(--blue);">—</div>
+        <div class="stat-sub">ultimo rilevato</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Guadagno / Perdita</div>
+        <div class="stat-val" id="a-gain">—</div>
+        <div class="stat-sub">valore assoluto</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">CAGR annuo</div>
+        <div class="stat-val" id="a-cagr">—</div>
+        <div class="stat-sub">rendimento annualizzato</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="legend-dot" style="background:#185FA5;"></span>Valore portafoglio</span>
+      <span><span class="legend-dot" style="background:#C0DD97; border: 0.5px solid #639922;"></span>Capitale investito</span>
+    </div>
+    <div class="chart-wrap"><canvas id="chart"></canvas></div>
+
+    <div class="section-title">Rendimento per periodo</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Periodo</th>
+          <th>Durata</th>
+          <th>Valore iniziale</th>
+          <th>Valore finale</th>
+          <th>Rendimento</th>
+          <th>CAGR annuo</th>
+        </tr>
+      </thead>
+      <tbody id="periods-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  Formula CAGR: (Valore finale / Valore iniziale)<sup>1/anni</sup> − 1 &nbsp;·&nbsp; I dati sono salvati solo in questa pagina, nessun server coinvolto.
+</footer>
+
+<script>
+  let entries = [];
+  let chartInstance = null;
+
+  const fmt = v => '€' + Math.round(v).toLocaleString('it-IT');
+  const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+
+  function showTab(name) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', ['inserisci','analisi'][i] === name);
+    });
+    document.getElementById('tab-inserisci').classList.toggle('active', name === 'inserisci');
+    document.getElementById('tab-analisi').classList.toggle('active', name === 'analisi');
+    if (name === 'analisi') renderAnalisi();
+  }
+
+  function addValore() {
+    const date = document.getElementById('val-date').value;
+    const amount = parseFloat(document.getElementById('val-amount').value);
+    const note = document.getElementById('val-note').value.trim();
+    if (!date || isNaN(amount) || amount < 0) { alert('Inserisci una data e un valore validi.'); return; }
+    entries.push({ type: 'valore', date, amount, note: note || '—', freq: '—' });
+    entries.sort((a, b) => a.date.localeCompare(b.date));
+    document.getElementById('val-date').value = '';
+    document.getElementById('val-amount').value = '';
+    document.getElementById('val-note').value = '';
+    renderTable();
+  }
+
+  function addVersamento() {
+    const date = document.getElementById('vers-date').value;
+    const amount = parseFloat(document.getElementById('vers-amount').value);
+    const freq = document.getElementById('vers-freq').value;
+    if (!date || isNaN(amount) || amount <= 0) { alert('Inserisci una data e un importo validi.'); return; }
+    const freqLabel = { una: 'Una volta', mensile: 'Mensile', annuale: 'Annuale' }[freq];
+    entries.push({ type: 'versamento', date, amount, note: freqLabel, freq });
+    entries.sort((a, b) => a.date.localeCompare(b.date));
+    document.getElementById('vers-date').value = '';
+    document.getElementById('vers-amount').value = '';
+    renderTable();
+  }
+
+  function removeEntry(idx) {
+    if (!confirm('Rimuovere questa voce?')) return;
+    entries.splice(idx, 1);
+    renderTable();
+  }
+
+  function clearAll() {
+    if (!confirm('Cancellare tutti i dati?')) return;
+    entries = [];
+    renderTable();
+  }
+
+  function formatDate(d) {
+    const [y, m, g] = d.split('-');
+    return `${g}/${m}/${y}`;
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('entries-body');
+    const table = document.getElementById('entries-table');
+    const empty = document.getElementById('empty-msg');
+    if (entries.length === 0) {
+      table.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    table.style.display = 'table';
+    empty.style.display = 'none';
+    tbody.innerHTML = entries.map((e, i) => `
+      <tr>
+        <td style="color:var(--text-secondary); font-size:12px;">${formatDate(e.date)}</td>
+        <td><span class="badge badge-${e.type}">${e.type === 'valore' ? 'Valore' : 'Versamento'}</span></td>
+        <td>${fmt(e.amount)}</td>
+        <td style="color:var(--text-tertiary); font-size:12px;">${e.note}</td>
+        <td><button class="btn btn-danger" onclick="removeEntry(${i})">Rimuovi</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function getValori() {
+    return entries.filter(e => e.type === 'valore').sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  function expandVersamenti(lastDate) {
+    const versamenti = entries.filter(e => e.type === 'versamento');
+    const expanded = [];
+    versamenti.forEach(v => {
+      const start = new Date(v.date);
+      const end = new Date(lastDate);
+      if (v.freq === 'una') {
+        expanded.push({ date: v.date, amount: v.amount });
+      } else if (v.freq === 'mensile') {
+        let d = new Date(start);
+        while (d <= end) {
+          expanded.push({ date: d.toISOString().slice(0, 10), amount: v.amount });
+          d.setMonth(d.getMonth() + 1);
+        }
+      } else if (v.freq === 'annuale') {
+        let d = new Date(start);
+        while (d <= end) {
+          expanded.push({ date: d.toISOString().slice(0, 10), amount: v.amount });
+          d.setFullYear(d.getFullYear() + 1);
+        }
+      }
+    });
+    return expanded;
+  }
+
+  function computeCumulativeInvested(valori) {
+    const lastDate = valori[valori.length - 1].date;
+    const expanded = expandVersamenti(lastDate);
+    return valori.map(v => {
+      const cumul = expanded
+        .filter(e => e.date <= v.date)
+        .reduce((sum, e) => sum + e.amount, 0);
+      return valori[0].amount + cumul;
+    });
+  }
+
+  function daysBetween(d1, d2) {
+    return (new Date(d2) - new Date(d1)) / (1000 * 60 * 60 * 24);
+  }
+
+  function cagrCalc(start, end, years) {
+    if (years <= 0 || start <= 0) return null;
+    return (Math.pow(end / start, 1 / years) - 1) * 100;
+  }
+
+  function durationLabel(days) {
+    if (days < 32) return Math.round(days) + ' giorni';
+    if (days < 365) return Math.round(days / 30) + ' mesi';
+    const y = days / 365.25;
+    return y.toFixed(1) + ' anni';
+  }
+
+  function renderAnalisi() {
+    const valori = getValori();
+    const content = document.getElementById('analysis-content');
+    const noData = document.getElementById('no-data-msg');
+
+    if (valori.length < 2) {
+      content.style.display = 'none';
+      noData.style.display = 'block';
+      return;
+    }
+    content.style.display = 'block';
+    noData.style.display = 'none';
+
+    const invested = computeCumulativeInvested(valori);
+    const first = valori[0];
+    const last = valori[valori.length - 1];
+    const totalInvested = invested[invested.length - 1];
+    const currentVal = last.amount;
+    const gain = currentVal - totalInvested;
+    const days = daysBetween(first.date, last.date);
+    const years = days / 365.25;
+    const cagrVal = cagrCalc(invested[0], currentVal, years);
+
+    document.getElementById('a-invested').textContent = fmt(totalInvested);
+    document.getElementById('a-current').textContent = fmt(currentVal);
+
+    const gainEl = document.getElementById('a-gain');
+    gainEl.textContent = (gain >= 0 ? '+' : '') + fmt(Math.abs(gain));
+    gainEl.className = 'stat-val ' + (gain >= 0 ? 'positive' : 'negative');
+
+    const cagrEl = document.getElementById('a-cagr');
+    if (cagrVal !== null) {
+      cagrEl.textContent = fmtPct(cagrVal);
+      cagrEl.className = 'stat-val ' + (cagrVal >= 0 ? 'positive' : 'negative');
+    } else {
+      cagrEl.textContent = '—';
+      cagrEl.className = 'stat-val';
+    }
+
+    // Chart
+    const labels = valori.map(v => formatDate(v.date));
+    const valData = valori.map(v => v.amount);
+
+    if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+    const ctx = document.getElementById('chart').getContext('2d');
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Valore portafoglio',
+            data: valData,
+            borderColor: '#185FA5',
+            backgroundColor: 'rgba(24,95,165,0.07)',
+            fill: true, tension: 0.35,
+            pointRadius: 5, pointBackgroundColor: '#185FA5',
+            pointHoverRadius: 7
+          },
+          {
+            label: 'Capitale investito',
+            data: invested,
+            borderColor: '#639922',
+            backgroundColor: 'rgba(192,221,151,0.12)',
+            fill: true, tension: 0.35,
+            pointRadius: 3, pointBackgroundColor: '#639922',
+            borderDash: [5, 4]
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: c => ' ' + c.dataset.label + ': ' + fmt(c.parsed.y)
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#888780', font: { size: 11 }, maxTicksLimit: 10 } },
+          y: {
+            grid: { color: 'rgba(128,128,128,0.1)' },
+            ticks: {
+              color: '#888780', font: { size: 11 },
+              callback: v => '€' + (v >= 1000 ? Math.round(v / 1000) + 'k' : v)
+            }
+          }
+        }
+      }
+    });
+
+    // Periods table
+    const tbody = document.getElementById('periods-body');
+    tbody.innerHTML = '';
+    for (let i = 1; i < valori.length; i++) {
+      const prev = valori[i - 1];
+      const curr = valori[i];
+      const d = daysBetween(prev.date, curr.date);
+      const y = d / 365.25;
+      const ret = ((curr.amount - prev.amount) / prev.amount) * 100;
+      const c = cagrCalc(prev.amount, curr.amount, y);
+      const cls = ret >= 0 ? 'positive' : 'negative';
+      tbody.innerHTML += `<tr>
+        <td style="font-size:12px; color:var(--text-secondary);">${formatDate(prev.date)} → ${formatDate(curr.date)}</td>
+        <td style="font-size:12px; color:var(--text-tertiary);">${durationLabel(d)}</td>
+        <td>${fmt(prev.amount)}</td>
+        <td>${fmt(curr.amount)}</td>
+        <td class="${cls}">${fmtPct(ret)}</td>
+        <td class="${cls}">${c !== null ? fmtPct(c) + '/anno' : '—'}</td>
+      </tr>`;
+    }
+  }
+
+  function exportCSV() {
+    if (entries.length === 0) { alert('Nessun dato da esportare.'); return; }
+    const rows = [['Data', 'Tipo', 'Importo (€)', 'Dettaglio']];
+    entries.forEach(e => rows.push([e.date, e.type, e.amount.toFixed(2), e.note]));
+    const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'investimento.csv'; a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>

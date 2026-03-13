@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interesse Composto — Simulatore</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f2;
+      --text: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-tertiary: #888780;
+      --border: rgba(0,0,0,0.12);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --blue: #185FA5;
+      --teal: #0F6E56;
+      --purple: #3C3489;
+      --green-light: #C0DD97;
+      --purple-mid: #7F77DD;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1c;
+        --bg-secondary: #2a2a28;
+        --text: #f0ede8;
+        --text-secondary: #b4b2a9;
+        --text-tertiary: #888780;
+        --border: rgba(255,255,255,0.12);
+        --blue: #85B7EB;
+        --teal: #5DCAA5;
+        --purple: #AFA9EC;
+        --green-light: #639922;
+        --purple-mid: #AFA9EC;
+      }
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.25rem; }
+    p.subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 2rem; }
+
+    .slider-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;
+    }
+    .slider-label { font-size: 13px; color: var(--text-secondary); min-width: 130px; }
+    .slider-val { font-size: 13px; font-weight: 500; min-width: 72px; text-align: right; }
+
+    input[type=range] {
+      flex: 1; height: 4px; appearance: none; background: var(--border);
+      border-radius: 2px; cursor: pointer; outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--text); border: 2px solid var(--bg); cursor: pointer;
+    }
+
+    .formula-box {
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      padding: 0.85rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .formula-box span { color: var(--blue); font-weight: 500; font-family: monospace; }
+
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 1.5rem;
+    }
+    .stat {
+      background: var(--bg-secondary); border-radius: var(--radius); padding: 0.85rem 1rem;
+    }
+    .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+    .stat-val { font-size: 20px; font-weight: 500; }
+    .stat-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+    .legend {
+      display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary);
+      margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 2px;
+      display: inline-block; margin-right: 4px; vertical-align: middle;
+    }
+
+    .chart-wrap { position: relative; width: 100%; height: 300px; }
+
+    footer {
+      margin-top: 2rem; font-size: 12px; color: var(--text-tertiary); text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Interesse composto</h1>
+  <p class="subtitle">Sposta i cursori per vedere come cresce il capitale nel tempo.</p>
+
+  <div class="slider-row">
+    <span class="slider-label">Capitale iniziale</span>
+    <input type="range" id="principal" min="1000" max="50000" step="500" value="10000">
+    <span class="slider-val" id="principal-out">€10.000</span>
+  </div>
+  <div class="slider-row">
+    <span class="slider-label">Tasso annuo</span>
+    <input type="range" id="rate" min="1" max="15" step="0.5" value="7">
+    <span class="slider-val" id="rate-out">7%</span>
+  </div>
+  <div class="slider-row">
+    <span class="slider-label">Anni</span>
+    <input type="range" id="years" min="1" max="40" step="1" value="20">
+    <span class="slider-val" id="years-out">20 anni</span>
+  </div>
+
+  <div class="formula-box">
+    A = P × (1 + r)<sup>t</sup> &nbsp;=&nbsp;
+    <span id="formula-live">€10.000 × (1.07)<sup>20</sup></span>
+    &nbsp;=&nbsp;
+    <span id="formula-result">€38.697</span>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-label">Capitale finale</div>
+      <div class="stat-val" id="s-total" style="color: var(--blue)">€38.697</div>
+      <div class="stat-sub">valore composto</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Interessi guadagnati</div>
+      <div class="stat-val" id="s-gain" style="color: var(--teal)">€28.697</div>
+      <div class="stat-sub">sopra il capitale</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Rendimento totale</div>
+      <div class="stat-val" id="s-pct" style="color: var(--purple)">+287%</div>
+      <div class="stat-sub">sul capitale iniziale</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="legend-dot" style="background:#C0DD97;"></span>Capitale versato</span>
+    <span><span class="legend-dot" style="background:#185FA5;"></span>Interesse composto</span>
+    <span><span class="legend-dot" style="background:#7F77DD;"></span>Solo interesse semplice</span>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="chart"></canvas>
+  </div>
+
+  <footer>Formula: A = P × (1 + r)<sup>t</sup> — interesse composto annuale</footer>
+
+  <script>
+    const fmt = v => '€' + Math.round(v).toLocaleString('it-IT');
+
+    function compute() {
+      return {
+        P: +document.getElementById('principal').value,
+        r: +document.getElementById('rate').value / 100,
+        t: +document.getElementById('years').value
+      };
+    }
+
+    function buildData() {
+      const { P, r, t } = compute();
+      const labels = [], compound = [], principal = [], simple = [];
+      for (let y = 0; y <= t; y++) {
+        labels.push(y === 0 ? 'Oggi' : 'Anno ' + y);
+        compound.push(Math.round(P * Math.pow(1 + r, y)));
+        principal.push(Math.round(P));
+        simple.push(Math.round(P * (1 + r * y)));
+      }
+      return { labels, compound, principal, simple };
+    }
+
+    const ctx = document.getElementById('chart').getContext('2d');
+    const init = buildData();
+
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: init.labels,
+        datasets: [
+          { label: 'Capitale', data: init.principal, backgroundColor: '#C0DD97', stack: 'c', barPercentage: 0.85 },
+          { label: 'Interesse composto', data: init.compound.map((v, i) => v - init.principal[i]), backgroundColor: '#185FA5', stack: 'c', barPercentage: 0.85 },
+          { label: 'Interesse semplice', data: init.simple, type: 'line', borderColor: '#7F77DD', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.3 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': ' + fmt(c.parsed.y) } }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { maxTicksLimit: 9, maxRotation: 0, color: '#888780', font: { size: 11 } } },
+          y: { stacked: true, grid: { color: 'rgba(128,128,128,0.15)' }, ticks: { color: '#888780', font: { size: 11 }, callback: v => '€' + (v >= 1000 ? Math.round(v / 1000) + 'k' : v) } }
+        }
+      }
+    });
+
+    function update() {
+      const { P, r, t } = compute();
+      const total = P * Math.pow(1 + r, t);
+      const gain = total - P;
+
+      document.getElementById('principal-out').textContent = fmt(P);
+      document.getElementById('rate-out').textContent = (r * 100).toFixed(1) + '%';
+      document.getElementById('years-out').textContent = t + ' anni';
+      document.getElementById('formula-live').innerHTML = fmt(P) + ' × (1.' + String(Math.round(r * 100)).padStart(2, '0') + ')<sup>' + t + '</sup>';
+      document.getElementById('formula-result').textContent = fmt(total);
+      document.getElementById('s-total').textContent = fmt(total);
+      document.getElementById('s-gain').textContent = '+' + fmt(gain);
+      document.getElementById('s-pct').textContent = '+' + Math.round((gain / P) * 100) + '%';
+
+      const nd = buildData();
+      chart.data.labels = nd.labels;
+      chart.data.datasets[0].data = nd.principal;
+      chart.data.datasets[1].data = nd.compound.map((v, i) => v - nd.principal[i]);
+      chart.data.datasets[2].data = nd.simple;
+      chart.update('none');
+    }
+
+    ['principal', 'rate', 'years'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+    });
+  </script>
+</body>
+</html>
