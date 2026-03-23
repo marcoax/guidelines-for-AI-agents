@@ -1,8 +1,0 @@
-{
-  "references.preferredLocation": "view",
-  "editor.fontSize": 17,
-  "markdown.validate.enabled": true,
-  "files.associations": {
-    "*.md": "markdown"
-  }
-}
