@@ -1,0 +1,25 @@
+{
+  "days": [
+    {
+      "date": "2026-03-20",
+      "total": 223,
+      "errors": {
+        "Process already in progress for serial {N}": 121,
+        "Aggregate with id '{UUID}' not found": 33,
+        "Get Machine Configuration variable content should be 26 or 27 bytes instead of {N}": 55,
+        "Invalid date format {values}": 3,
+        "Expected response code 250 but got code \"451\", with message \"451 4.4.2 Timeout waiting for data from client. \"": 4,
+        "Call to a member function getSupportUser() on null": 5,
+        "Command not implemented: '20'": 1,
+        "invalid argument for replace: empty key": 1
+      },
+      "hourly": {
+        "04": 37,
+        "05": 40,
+        "06": 29,
+        "07": 50,
+        "08": 67
+      }
+    }
+  ]
+}
