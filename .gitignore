@@ -1,9 +1,9 @@
-# Local settings (non sincronizzare su git)
+# Local settings
 .claude.localsettings
 
 # OS
 .DS_Store
-.DS_Store
-.vscode/settings.json
-.DS_Store
-.DS_Store
+
+# IDE
+.idea/
+.vscode/
