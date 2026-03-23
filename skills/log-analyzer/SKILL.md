@@ -1,6 +1,6 @@
 ---
 name: log-analyzer
-description: "Analyze Symfony app.ERROR log files for the Carimali/caricare project. Use ONLY when the user explicitly mentions a Symfony/caricare/carimali log file, or when the file clearly contains 'app.ERROR' lines. Triggers on: analizza il log, genera report dal log, pulisci il log, log_errori, app.ERROR, analisi errori caricare/carimali. Do NOT trigger on generic log analysis requests for non-Symfony systems (nginx, Apache, Laravel, etc.). Produces two files: a cleaned log (NAME_clean.txt) and a markdown report (NAME_report.md)."
+description: "Analyze Symfony app.ERROR log files for the Carimali/caricare project. Use this skill whenever the user mentions a log file, log errors, log analysis, log report, or asks to clean/analyze/summarize a .txt log file. Triggers on: analizza il log, genera report dal log, pulisci il log, log_errori, app.ERROR, analisi errori, or any request to process a Symfony log file. Produces two files: a cleaned log (NAME_clean.txt) and a markdown report (NAME_report.md)."
 ---
 
 # Log Analyzer Skill
@@ -31,53 +31,23 @@ Example: input `log_errori_2026_03_20.txt` → `log_errori_2026_03_20_clean.txt`
 
 ### Automatic (preferred)
 
-**If the user has not provided a file path**, ask before proceeding:
-> "Qual è il percorso del file di log da analizzare?"
-
-When the path is known, run the script directly:
+When the user provides a log file path, run the script directly:
 
 ```bash
 python {SKILL_DIR}/scripts/analyze_log.py PATH/TO/log_errori_YYYY_MM_DD.txt
 ```
 
-All output files are written to the **current working directory (CWD)** where the script is run,
-not to the input file's directory. If the user runs from a different folder, output lands in CWD.
+Both output files are written to the **same directory** as the input file.
 
 ### Post-analysis step
 
-After running the script:
-1. Read the generated `log_report_*.md` file from CWD using the Read tool
-2. Show its **full contents** to the user (do not summarize — show the complete markdown)
-3. Check the script stdout for the line `*** NEW ERROR TYPES DETECTED`:
-   - If present: show the new error types as a **prominent separate block** in the chat, e.g.:
-     ```
-     ⚠️ NUOVI TIPI DI ERRORE RILEVATI:
-     - <error type 1>
-     - <error type 2>
-     ```
-   - If absent ("No new error types detected."): no action needed
-4. Then **always ask**:
+After running the script and presenting the report to the user, **always ask**:
 
 > "Ci sono nuove regole di pulizia da aggiungere al log analyzer?"
 
 If the user provides new rules, update **both** files (they must stay in sync):
-
 1. Read `assets/CLEAN_RULES.md` and add the new rule following the existing numbered format (with Input/Output examples)
-
-2. Update `scripts/analyze_log.py`:
-   - **Add a detection helper** in the `CLEAN_RULES filtering helpers` section, following this exact pattern:
-     ```python
-     def is_<descriptive_name>_line(line: str) -> bool:
-         return '<unique string from the line to match>' in line
-     ```
-     Or for block-level rules:
-     ```python
-     def is_<descriptive_name>_block(block_lines: list[str]) -> bool:
-         return any(is_<descriptive_name>_line(line) for line in block_lines)
-     ```
-   - **Integrate in `clean_block()`**: Add the check at the **top** of `clean_block()` (before the serial extraction) for whole-block drop rules, or inside the `for line in block_lines` loop for line-level filters
-   - If the new rule requires normalising a variable part (e.g. a new number format), also add an entry to `NORMALISE_PATTERNS` at the top of the file
-
+2. Update `scripts/analyze_log.py` to implement the new rule — add a detection helper + integrate it in `clean_block()`
 3. Re-run the script on the log file from `backup/` (step 7 moves the original there):
    ```bash
    python {SKILL_DIR}/scripts/analyze_log.py backup/log_errori_YYYY_MM_DD.txt
@@ -95,20 +65,10 @@ If the path is omitted, defaults to `error_history.json` in the current director
 
 ### Manual fallback
 
-If the script cannot run:
-
-1. Read `assets/CLEAN_RULES.md` to understand the cleaning rules
-2. Read the input log file using the Read tool
-3. For each `app.ERROR` line found:
-   - Apply normalisation: replace serial numbers with `{N}`, UUIDs with `{UUID}`, counts with `{N}`, trailing date values with `{values}` — following the same patterns in `NORMALISE_PATTERNS` at the top of `analyze_log.py`
-   - Skip lines matching Rule 4 (`Troppi errori di processo`)
-4. Count occurrences of each normalised error type
-5. Output a markdown report **directly in the conversation** using the same format as `assets/log_report_sample.md` — including: header, total count, hourly distribution table, error type table with `Count` and `%` columns
-6. Do NOT attempt to write files — output the report as markdown text in the conversation
+If the script cannot run, read `assets/CLEAN_RULES.md` for the cleaning rules and `assets/log_report_sample.md` for the expected report format, then apply them manually.
 
 ## Reference files
 
-- `assets/SCORING_CHECKLIST.md` — 4-question yes/no checklist to verify output quality
 - `assets/CLEAN_RULES.md` — full cleaning rules with examples
 - `assets/known_errors.txt` — list of known normalised error types (one per line)
 - `assets/error_trend_template.html` — HTML template for the trend dashboard (data injected by script)

@@ -1,0 +1,82 @@
+[
+  {
+    "query": "ho appena aggiunto il model BlockedDate con il builder e la config admin, puoi dare un'occhiata se è tutto a posto?",
+    "should_trigger": true
+  },
+  {
+    "query": "review",
+    "should_trigger": true
+  },
+  {
+    "query": "controlla le modifiche che ho fatto al model Patient, ho aggiunto dei campi nuovi e il getFieldSpec",
+    "should_trigger": true
+  },
+  {
+    "query": "revisiona questo file, ho aggiunto una migration per la tabella appointments e voglio essere sicuro che segua le convenzioni",
+    "should_trigger": true
+  },
+  {
+    "query": "controlla modifiche fatte. nel backend",
+    "should_trigger": true
+  },
+  {
+    "query": "ho modificato list.php per aggiungere la sezione 'prodotti', controlla che sia tutto ok con i ruoli e i permessi",
+    "should_trigger": true
+  },
+  {
+    "query": "review changes — ho toccato il builder e il model, voglio verificare che i getter/setter delle date siano corretti e non usi $casts",
+    "should_trigger": true
+  },
+  {
+    "query": "check this file, ho creato un nuovo model con le date e voglio essere sicuro di non aver messo nulla in $casts che non dovrebbe esserci",
+    "should_trigger": true
+  },
+  {
+    "query": "puoi controllare se il codice che ho scritto rispetta le guidelines del progetto? ho modificato 3 file nel pannello admin",
+    "should_trigger": true
+  },
+  {
+    "query": "controlla se la traduzione in admin.php è in ordine alfabetico e se la config in list.php ha i roles giusti",
+    "should_trigger": true
+  },
+  {
+    "query": "crea un nuovo model chiamato Invoice con builder, migration, config admin e traduzione",
+    "should_trigger": false
+  },
+  {
+    "query": "spiega come funziona il pattern Builder in LaraCMS, voglio capire prima di scrivere codice",
+    "should_trigger": false
+  },
+  {
+    "query": "fammi un refactoring del PatientController per usare i form request",
+    "should_trigger": false
+  },
+  {
+    "query": "scrivi i test per il model Appointment, unit test per il builder e integration per le API",
+    "should_trigger": false
+  },
+  {
+    "query": "aggiorna il README con le istruzioni per il setup del progetto in locale",
+    "should_trigger": false
+  },
+  {
+    "query": "ho un bug: quando salvo una data dal datepicker admin mi arriva null nel DB. Puoi fixarlo?",
+    "should_trigger": false
+  },
+  {
+    "query": "crea una nuova pagina frontend per la lista appuntamenti con Vue, Bootstrap e il datepicker",
+    "should_trigger": false
+  },
+  {
+    "query": "commit le modifiche correnti con un messaggio che descriva l'aggiunta delle blocked dates",
+    "should_trigger": false
+  },
+  {
+    "query": "fammi un piano per implementare il sistema di notifiche email per gli appuntamenti",
+    "should_trigger": false
+  },
+  {
+    "query": "qual è la differenza tra scopeActive e il metodo active() del LaraCmsBuilder?",
+    "should_trigger": false
+  }
+]

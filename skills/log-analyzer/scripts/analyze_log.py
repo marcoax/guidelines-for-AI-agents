@@ -50,8 +50,6 @@ NORMALISE_PATTERNS = [
     (re.compile(r'(Invalid date format)\s+.*'), r'\1 {values}'),
     # Expected response code 250 … 451 message (keep template but strip dynamic parts)
     # already stable in sample — keep as-is
-    # MySQL "server has gone away" — normalise serial number in params array
-    (re.compile(r'with params \["\d+"\]'), 'with params ["{N}"]'),
 ]
 
 # ---------------------------------------------------------------------------
@@ -157,12 +155,6 @@ def split_blocks(lines: list[str]) -> list[list[str]]:
 # Error normalisation
 # ---------------------------------------------------------------------------
 
-_PACKET_RECEIVED_RE = re.compile(
-    r'Packet received \[([^\]]+)\]:\s*((?:[\da-fA-F]{2}\s*)+)'
-)
-_ERROR_MSG_RE = re.compile(r'\] app\.ERROR: (.+)')
-
-
 def normalise_error(msg: str) -> str:
     msg = msg.strip()
     # strip trailing [] []
@@ -189,40 +181,6 @@ def extract_errors_from_lines(lines: list[str]) -> list[tuple[str, str, str]]:
             norm = normalise_error(msg)
             results.append((dt_str, hour, norm))
     return results
-
-
-def extract_example_payloads(cleaned_lines: list[str]) -> dict[str, dict]:
-    """
-    Scan cleaned-log blocks and collect one example 'Packet received' payload
-    per normalised error type.
-    Returns {norm_error: {'topic': str, 'hex': str, 'type': str}}.
-    Only works on block-format logs (with '--' separators).
-    """
-    if not any(l.strip() == '--' for l in cleaned_lines):
-        return {}
-
-    result: dict[str, dict] = {}
-    for block in split_blocks(cleaned_lines):
-        error_line = next((l for l in block if 'app.ERROR' in l), None)
-        if not error_line:
-            continue
-        m = _ERROR_MSG_RE.search(error_line)
-        if not m:
-            continue
-        norm = normalise_error(m.group(1))
-        if norm in result:
-            continue  # already have an example for this type
-
-        for line in block:
-            pm = _PACKET_RECEIVED_RE.search(line)
-            if pm:
-                topic = pm.group(1)
-                hex_bytes = pm.group(2).strip()
-                parts = topic.split('/')
-                msg_type = parts[1] if len(parts) >= 2 else topic
-                result[norm] = {'topic': topic, 'hex': hex_bytes, 'type': msg_type}
-                break
-    return result
 
 
 # ---------------------------------------------------------------------------
@@ -341,12 +299,10 @@ def check_new_errors(errors: list[tuple[str, str, str]], known_path: Path) -> li
 # ---------------------------------------------------------------------------
 
 def update_error_history(history_path: Path, errors: list[tuple[str, str, str]],
-                         date_label: str | None = None,
-                         payloads: dict | None = None) -> dict | None:
+                         date_label: str | None = None) -> dict | None:
     """
     Append or update today's entry in error_history.json.
-    Each entry: { date, total, errors: {norm: count}, hourly: {HH: count},
-                  example_payloads: {norm: {topic, hex, type}} (optional) }.
+    Each entry: { date, total, errors: {norm: count}, hourly: {HH: count} }.
     If an entry for the same date already exists, it is replaced.
     Returns the full history dict, or None if errors is empty.
     """
@@ -368,8 +324,6 @@ def update_error_history(history_path: Path, errors: list[tuple[str, str, str]],
         'errors': dict(type_counts),
         'hourly': dict(hourly),
     }
-    if payloads:
-        day_entry['example_payloads'] = payloads
 
     # Load existing history
     if history_path.exists():
@@ -477,7 +431,6 @@ def main():
 
     # Step 2: extract errors (from cleaned log)
     errors = extract_errors_from_lines(cleaned_lines)
-    example_payloads = extract_example_payloads(cleaned_lines)
     print(f'Total errors found: {len(errors)}')
 
     # Step 3: archive existing report files to report/
@@ -499,8 +452,7 @@ def main():
 
     # Step 5: update error_history.json and generate error_trend.html
     history_path = project_dir / 'error_history.json'
-    history_data = update_error_history(history_path, errors, date_label=file_date,
-                                         payloads=example_payloads)
+    history_data = update_error_history(history_path, errors, date_label=file_date)
     print(f'History updated:   {history_path}')
 
     if history_data:

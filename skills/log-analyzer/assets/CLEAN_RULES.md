@@ -89,23 +89,3 @@ When the error is `Aggregate with id '00000000-0000-0000-0000-000000000000' not 
 [2026-03-20 05:14:36] app.ERROR: Aggregate with id '00000000-0000-0000-0000-000000000000' not found [] []
 --
 ```
-
----
-
-## Normalization Rules
-
-These rules are applied in `NORMALISE_PATTERNS` (in `analyze_log.py`) after extraction, to collapse variable parts into placeholders so that the same logical error type is counted as one.
-
-### N1. MySQL params serial number
-
-Normalize the serial number inside `with params ["XXXXXX"]` so that all "MySQL server has gone away" errors on different machines are grouped as one error type.
-
-**Input:**
-```
-An exception occurred while executing '...machines WHERE serial = ? LIMIT 1' with params ["279008"]:  SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
-```
-
-**Output:**
-```
-An exception occurred while executing '...machines WHERE serial = ? LIMIT 1' with params ["{N}"]:  SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
-```
