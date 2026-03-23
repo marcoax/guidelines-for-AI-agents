@@ -36,7 +36,9 @@ Scan for config files:
 - `Cargo.toml` → Rust
 - Docker, CI/CD configs
 
-Extract: frameworks, DB, testing tools, build tools, deployment.
+Extract: frameworks + exact versions, DB + exact versions, testing tools, build tools, deployment.
+
+⚠️ Version numbers are mandatory. If not in config files, scan CLAUDE.md, TECHNICAL_REFERENCE.md, README.md. Format: "PHP 7.2" not "PHP".
 
 ### Step 3: Generate Stack Section
 
@@ -141,4 +143,7 @@ Location: CWD, filename = user choice from Step 1.
 
 ## Template
 
-Base template: `assets/CLAUDE.BASE.md` → copy verbatim at end of generated CLAUDE.md.
+Base template: `assets/CLAUDE.BASE.md` → NON copiare il contenuto. Aggiungere una riga di riferimento:
+```
+See @assets/CLAUDE.BASE.md
+```
