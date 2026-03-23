@@ -262,30 +262,6 @@
             </div>
         </div>
 
-        <!-- Last day detail table -->
-        <div class="card rounded-2xl p-6 mt-6 animate-in delay-5">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h2 class="text-lg font-display font-600 text-white">Error Detail — <span id="last-day-date">--</span></h2>
-                    <p class="text-sm text-gray-500 font-mono">All error types for the latest analyzed day</p>
-                </div>
-                <div class="w-3 h-3 rounded-full bg-accent-amber/50"></div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="data-table w-full text-sm">
-                    <thead>
-                        <tr class="border-b border-white/5">
-                            <th class="text-right py-3 px-4 font-mono text-xs text-gray-500 uppercase tracking-wider w-10">#</th>
-                            <th class="text-left py-3 px-4 font-mono text-xs text-gray-500 uppercase tracking-wider">Error</th>
-                            <th class="text-right py-3 px-4 font-mono text-xs text-gray-500 uppercase tracking-wider w-20">Count</th>
-                            <th class="text-right py-3 px-4 font-mono text-xs text-gray-500 uppercase tracking-wider w-16">%</th>
-                        </tr>
-                    </thead>
-                    <tbody id="last-day-tbody"></tbody>
-                </table>
-            </div>
-        </div>
-
         <!-- Footer -->
         <footer class="mt-10 text-center">
             <p class="font-mono text-xs text-gray-600">
@@ -604,82 +580,6 @@
             });
         }
 
-        const MQTT_TYPE_COLORS = {
-            'CONFIG':   { bg: 'rgba(99,102,241,0.15)',  border: '#6366f1', text: '#a5b4fc' },
-            'VENDING':  { bg: 'rgba(34,211,238,0.12)',  border: '#22d3ee', text: '#67e8f9' },
-            'DOSEINFO': { bg: 'rgba(245,158,11,0.12)',  border: '#f59e0b', text: '#fcd34d' },
-            'COMMAND':  { bg: 'rgba(16,185,129,0.12)',  border: '#10b981', text: '#6ee7b7' },
-            'ALARM':    { bg: 'rgba(244,63,94,0.12)',   border: '#f43f5e', text: '#fda4af' },
-        };
-
-        function mqttTypeBadge(type) {
-            const c = MQTT_TYPE_COLORS[type] || { bg: 'rgba(255,255,255,0.06)', border: '#4b5563', text: '#9ca3af' };
-            return `<span style="background:${c.bg};border:1px solid ${c.border};color:${c.text}" class="inline-block font-mono text-xs px-2 py-0.5 rounded">${type}</span>`;
-        }
-
-        function copyPayload(hex, btn) {
-            navigator.clipboard.writeText(hex).then(() => {
-                const orig = btn.textContent;
-                btn.textContent = 'copied!';
-                btn.style.color = '#10b981';
-                setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
-            });
-        }
-
-        function buildLastDayTable(data) {
-            const lastDay = data.days[data.days.length - 1];
-            document.getElementById('last-day-date').textContent = lastDay.date;
-
-            const payloads = lastDay.example_payloads || {};
-            const hasPayloads = Object.keys(payloads).length > 0;
-
-            // Update table header if payloads are available
-            if (hasPayloads) {
-                const thead = document.querySelector('#last-day-tbody').closest('table').querySelector('thead tr');
-                thead.innerHTML += `
-                    <th class="text-left py-3 px-4 font-mono text-xs text-gray-500 uppercase tracking-wider w-24">MQTT</th>
-                    <th class="text-left py-3 px-4 font-mono text-xs text-gray-500 uppercase tracking-wider">Example Payload</th>
-                `;
-            }
-
-            const sorted = Object.entries(lastDay.errors).sort((a, b) => b[1] - a[1]);
-            const tbody = document.getElementById('last-day-tbody');
-
-            sorted.forEach(([err, count], idx) => {
-                const pct = ((count / lastDay.total) * 100).toFixed(1);
-                const p = payloads[err];
-
-                let mqttCell = '';
-                let payloadCell = '';
-                if (hasPayloads) {
-                    if (p) {
-                        const truncated = p.hex.length > 48 ? p.hex.substring(0, 48) + '…' : p.hex;
-                        const escaped = p.hex.replace(/'/g, "\\'");
-                        mqttCell = `<td class="py-3 px-4">${mqttTypeBadge(p.type)}</td>`;
-                        payloadCell = `<td class="py-3 px-4">
-                            <span class="font-mono text-xs text-gray-400" title="${p.hex}">${truncated}</span>
-                            <button onclick="copyPayload('${escaped}', this)"
-                                class="ml-2 font-mono text-xs text-accent-indigo hover:text-white border border-white/10 hover:border-accent-indigo/50 rounded px-2 py-0.5 transition-colors">copy</button>
-                        </td>`;
-                    } else {
-                        mqttCell = `<td class="py-3 px-4 text-gray-600 font-mono text-xs">—</td>`;
-                        payloadCell = `<td class="py-3 px-4 text-gray-600 font-mono text-xs">—</td>`;
-                    }
-                }
-
-                const tr = document.createElement('tr');
-                tr.className = 'border-b border-white/5';
-                tr.innerHTML = `
-                    <td class="py-3 px-4 font-mono text-right text-gray-600">${idx + 1}</td>
-                    <td class="py-3 px-4 text-gray-300 font-mono text-xs break-all" title="${err.replace(/"/g, '&quot;')}">${err}</td>
-                    <td class="py-3 px-4 font-mono text-right text-white font-600">${count}</td>
-                    <td class="py-3 px-4 font-mono text-right text-accent-amber">${pct}%</td>
-                    ${mqttCell}${payloadCell}
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
         // Init
         (() => {
             if (!DATA || !DATA.days || DATA.days.length === 0) {
@@ -696,7 +596,6 @@
             buildStackedChart(DATA);
             buildHourlyChart(DATA);
             buildTable(DATA);
-            buildLastDayTable(DATA);
 
             // Show generation timestamp
             if (GENERATED_AT) {
