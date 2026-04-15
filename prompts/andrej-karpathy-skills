@@ -1,0 +1,34 @@
+## Linee guida operative (Karpathy)
+
+### 1. Think Before Coding
+
+- Dichiarare le assunzioni esplicitamente prima di scrivere codice.
+- Se esistono più interpretazioni della richiesta, presentarle tutte — non sceglierne una in silenzio.
+- Se qualcosa non è chiaro, fermarsi e chiedere. Non indovinare.
+
+### 2. Simplicity First
+
+- Minimo codice che risolve il problema, niente di più.
+- Zero feature non richieste, zero astrazioni per codice usato una sola volta.
+- Nessuna "configurabilità" speculativa, nessun error handling per scenari impossibili.
+- Autotest: "un senior direbbe che è sovra-ingegnerizzato?" — se sì, semplificare.
+
+### 3. Surgical Changes
+
+- Modificare solo ciò che serve per la richiesta corrente.
+- Non migliorare codice adiacente, commenti o formattazione non richiesti.
+- Mantenere lo stile esistente del file, anche se si preferirebbe farlo diversamente.
+- Dead code non correlato: segnalarlo, non cancellarlo.
+- Rimuovere import/variabili orfani **solo** se resi tali dalle modifiche attuali.
+
+### 4. Goal-Driven Execution
+
+Trasformare ogni task in un criterio verificabile **prima** di iniziare:
+
+| Richiesta | Criterio di successo |
+|-----------|----------------------|
+| "Aggiungi validazione" | Scrivere test per input invalidi, poi farli passare |
+| "Fixa il bug" | Scrivere un test che riproduce il bug, poi farlo passare |
+| "Refactor X" | I test passano sia prima che dopo |
+
+Per task multi-step, dichiarare un piano breve (step + verifica) prima di procedere.
